@@ -1,0 +1,100 @@
+name: Publish Tous ensemble 1.0.4
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/publish-1.0.4.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Restore v1.0.4 sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .publish/source.b64.part* | base64 --decode > /tmp/tous-ensemble-source.tar.gz
+          tar -xzf /tmp/tous-ensemble-source.tar.gz
+          for file in Core.lua Transport.lua Activities.lua GBGBridge.lua GuildSearch.lua UI.lua; do
+            test -s "TousEnsemble/$file"
+          done
+
+      - name: Restore portrait media
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf /tmp/gbg
+          git clone --depth 1 https://github.com/Glayna1/G.B.G.git /tmp/gbg
+          MEDIA_DIR="$(find /tmp/gbg -type d -path '*/Media/Characters' | head -n 1)"
+          test -n "$MEDIA_DIR"
+          rm -rf TousEnsemble/Media/Characters
+          mkdir -p TousEnsemble/Media/Characters
+          for i in $(seq 1 132); do
+            n=$(printf "%02d" "$i")
+            test -s "$MEDIA_DIR/custom_${n}.tga"
+            cp "$MEDIA_DIR/custom_${n}.tga" TousEnsemble/Media/Characters/
+          done
+          COUNT="$(find TousEnsemble/Media/Characters -maxdepth 1 -type f -name 'custom_*.tga' | wc -l | tr -d ' ')"
+          test "$COUNT" = "132"
+
+      - name: Validate addon
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q '^## Version: 1.0.4$' TousEnsemble/TousEnsemble.toc
+          test -s TousEnsemble/README.txt
+          test -s TousEnsemble/CHANGELOG.txt
+          for file in Core.lua Transport.lua Activities.lua GBGBridge.lua GuildSearch.lua UI.lua; do
+            test -s "TousEnsemble/$file"
+          done
+          COUNT="$(find TousEnsemble/Media/Characters -maxdepth 1 -type f -name 'custom_*.tga' | wc -l | tr -d ' ')"
+          test "$COUNT" = "132"
+
+      - name: Build installable ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f Tous_ensemble_1.0.4.zip
+          zip -qr Tous_ensemble_1.0.4.zip TousEnsemble
+          test -s Tous_ensemble_1.0.4.zip
+
+      - name: Commit complete addon
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add TousEnsemble
+          git rm -r --ignore-unmatch .publish
+          if ! git diff --cached --quiet; then
+            git commit -m "Publie Tous ensemble 1.0.4"
+            git push origin HEAD:main
+          fi
+
+      - name: Publish GitHub release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if gh release view v1.0.4 >/dev/null 2>&1; then
+            gh release upload v1.0.4 Tous_ensemble_1.0.4.zip --clobber
+          else
+            gh release create v1.0.4 Tous_ensemble_1.0.4.zip \
+              --title "Tous ensemble 1.0.4" \
+              --notes "Première publication GitHub complète de Tous ensemble. Addon autonome de recherche d'activités à l'échelle du serveur, filtre FR/All, profils, notifications, recherche de guilde, passerelle G.B.G, échelle 50–125 %, fermeture par Échap et semi-transparence en combat ou déplacement."
+          fi
