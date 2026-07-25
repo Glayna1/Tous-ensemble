@@ -1,0 +1,42 @@
+Tous ensemble 1.0.4
+
+- La touche Échap ferme maintenant la fenêtre Tous ensemble et ses fenêtres secondaires.
+- Ajout d'un réglage pour rendre l'interface semi-transparente pendant les combats.
+- Ajout d'un réglage indépendant pour la rendre semi-transparente pendant les déplacements.
+- Ajout d'un réglage précis de l'opacité de 20 % à 80 %, par pas de 1 %.
+- Transition douce entre l'opacité normale et l'opacité réduite.
+
+Tous ensemble 1.0.3
+
+- Échelle minimale abaissée de 75 % à 50 %.
+- Les boutons - et + continuent de modifier l’échelle par pas exact de 1 %.
+- Le bouton - se désactive uniquement lorsque 50 % est atteint.
+- La valeur enregistrée est correctement restaurée après /reload ou reconnexion.
+
+Tous ensemble 1.0.2
+
+- Remplacement du curseur d’échelle défaillant par des boutons - et +.
+- Chaque clic modifie immédiatement l’interface de 1 %, de 75 % à 125 %.
+- Le pourcentage exact reste affiché entre les deux boutons.
+- Désactivation automatique du bouton correspondant lorsque la limite est atteinte.
+
+Tous ensemble 1.0.1
+
+- Interface désormais française par défaut, même sur un client enUS.
+- Ajout du choix Français / English dans le profil.
+- Réorganisation complète de la page Profil : portraits, filtres, notifications et réglages ne se chevauchent plus.
+- Échelle de l’interface réglable exactement de 75 % à 125 %, par pas de 1 %.
+- Suppression de l’affichage « G.B.G bridge active » / état de passerelle dans l’en-tête.
+
+Tous ensemble 1.0.0
+- Addon autonome de recherche d'activités serveur.
+- Interface inspirée du Dungeon Finder G.B.G.
+- Profils et 132 portraits.
+- Création, modification, fermeture et expiration des activités.
+- Inscriptions automatiques ou manuelles.
+- Rôles et invitations silencieuses.
+- Filtre FR / All strict.
+- Notifications et mini bouton de groupes actifs.
+- Recherche de guilde, candidatures et publication autonome.
+- Passerelle bidirectionnelle avec le Dungeon Finder et les profils G.B.G.
+- Déduplication des activités miroirs et prévention des conflits d'annonces de guilde.
