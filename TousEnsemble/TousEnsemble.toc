@@ -1,0 +1,14 @@
+## Interface: 30300
+## Title: |cff9a7cffTous ensemble|r
+## Notes: Recherche d'activités à l'échelle du serveur, profils personnalisés, notifications, recherche de guilde et passerelle G.B.G.
+## Notes-frFR: Recherche d'activités à l'échelle du serveur, profils personnalisés, notifications, recherche de guilde et passerelle G.B.G.
+## Author: Glayna
+## Version: 1.0.4
+## SavedVariables: TousEnsembleDB
+
+Core.lua
+Transport.lua
+Activities.lua
+GBGBridge.lua
+GuildSearch.lua
+UI.lua
