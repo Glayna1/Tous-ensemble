@@ -12,3 +12,4 @@ Activities.lua
 GBGBridge.lua
 GuildSearch.lua
 UI.lua
+Admin.lua
